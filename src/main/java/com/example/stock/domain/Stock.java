@@ -22,6 +22,10 @@ public class Stock {
         this.quantity = quantity;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Long getQuantity() {
         return quantity;
     }
