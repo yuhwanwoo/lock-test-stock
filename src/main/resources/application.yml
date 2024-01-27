@@ -8,6 +8,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:43306/lock-stock
     username: root
     password: root
+    hikari:
+      maximum-pool-size: 40
 logging:
   level:
     org:

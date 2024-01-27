@@ -3,6 +3,7 @@ package com.example.stock.service;
 import com.example.stock.domain.Stock;
 import com.example.stock.repository.StockRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -46,6 +47,15 @@ public class StockService {
 
 //    @Transactional
     public synchronized void decrease(Long id, Long quantity) {
+        Stock stock = stockRepository.findById(id)
+                .orElseThrow();
+        stock.decrease(quantity);
+
+        stockRepository.saveAndFlush(stock);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW) // 부모 트랜잭션과는 별개로 가야함
+    public void decreaseForNamedLock(Long id, Long quantity) {
         Stock stock = stockRepository.findById(id)
                 .orElseThrow();
         stock.decrease(quantity);
