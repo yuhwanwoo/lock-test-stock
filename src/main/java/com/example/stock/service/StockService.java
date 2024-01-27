@@ -63,6 +63,15 @@ public class StockService {
         stockRepository.saveAndFlush(stock);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW) // 부모 트랜잭션과는 별개로 가야함
+    public void decreaseForRedis(Long id, Long quantity) {
+        Stock stock = stockRepository.findById(id)
+                .orElseThrow();
+        stock.decrease(quantity);
+
+        stockRepository.saveAndFlush(stock);
+    }
+
 /*
     DB를 활용하여 정합성 문제를 해결하는 법
     1. Pessimistic Lock
